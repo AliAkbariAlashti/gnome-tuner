@@ -5,6 +5,8 @@ gi.require_version("Adw", "1")
 
 from gi.repository import Adw, Gtk
 
+from ui.tuner_view import TunerView
+
 
 class MainWindow(Adw.ApplicationWindow):
     def __init__(self, **kwargs):
@@ -13,14 +15,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.set_title("GNOME Tuner")
         self.set_default_size(400, 300)
 
-        self.set_content(
-            Gtk.Box(
-                orientation=Gtk.Orientation.VERTICAL,
-                spacing=12,
-                valign=Gtk.Align.CENTER,
-                halign=Gtk.Align.CENTER,
-            )
-        )
-
-        label = Gtk.Label(label="GNOME Tuner (v0.1)")
-        self.get_content().append(label)
+        toolbar_view = Adw.ToolbarView()
+        toolbar_view.add_top_bar(Adw.HeaderBar())
+        toolbar_view.set_content(TunerView())
+        self.set_content(toolbar_view)

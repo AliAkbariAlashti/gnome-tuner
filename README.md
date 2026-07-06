@@ -71,6 +71,8 @@ gnome-tuner/
 ├── src/
 │   ├── app.py        # Adw.Application subclass
 │   └── window.py     # Main application window
+├── ui/
+│   └── tuner_view.py # Tuner display widget (note, frequency, meter)
 ├── data/             # Desktop entry, icons, metainfo
 └── flatpak/          # Flatpak manifest (planned)
 ```
