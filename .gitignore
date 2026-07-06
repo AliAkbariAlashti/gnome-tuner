@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+
+# Local tooling settings
+.claude/
+
+# Flatpak build artifacts
+.flatpak-builder/
+flatpak/build/
+repo/
