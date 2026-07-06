@@ -2,7 +2,9 @@ import gi
 
 gi.require_version("Gtk", "4.0")
 
-from gi.repository import Gtk
+from gi.repository import Gtk, GLib
+
+from src.services.fake_tuner import FakeTuner
 
 
 class TunerView(Gtk.Box):
@@ -14,28 +16,54 @@ class TunerView(Gtk.Box):
             halign=Gtk.Align.CENTER,
         )
 
+        self.tuner = FakeTuner()
+
         title = Gtk.Label(label="GNOME Tuner")
         title.add_css_class("title-1")
 
-        note_label = Gtk.Label(label="A4")
-        note_label.add_css_class("title-1")
+        self.note_label = Gtk.Label(label="--")
+        self.note_label.add_css_class("title-1")
 
-        frequency_label = Gtk.Label(label="440.0 Hz")
+        self.frequency_label = Gtk.Label(label="--- Hz")
 
-        status_label = Gtk.Label(label="Waiting for microphone...")
+        self.status_label = Gtk.Label(label="Starting...")
 
-        meter = Gtk.Scale.new_with_range(
+        self.meter = Gtk.Scale.new_with_range(
             Gtk.Orientation.HORIZONTAL,
             -50,
             50,
             1,
         )
-        meter.set_value(0)
-        meter.set_sensitive(False)
-        meter.set_size_request(300, -1)
+        self.meter.set_size_request(300, -1)
 
         self.append(title)
-        self.append(note_label)
-        self.append(frequency_label)
-        self.append(meter)
-        self.append(status_label)
+        self.append(self.note_label)
+        self.append(self.frequency_label)
+        self.append(self.meter)
+        self.append(self.status_label)
+
+        GLib.timeout_add(300, self.update_tuner)
+
+    def update_tuner(self):
+        data = self.tuner.get_reading()
+
+        self.note_label.set_label(data["note"])
+
+        self.frequency_label.set_label(
+            f'{data["frequency"]:.1f} Hz'
+        )
+
+        self.meter.set_value(data["cents"])
+
+        cents = data["cents"]
+
+        if abs(cents) <= 3:
+            status = "In Tune"
+        elif cents < 0:
+            status = "Flat"
+        else:
+            status = "Sharp"
+
+        self.status_label.set_label(status)
+
+        return True

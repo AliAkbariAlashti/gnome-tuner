@@ -70,7 +70,9 @@ gnome-tuner/
 ├── run.py            # Entry point
 ├── src/
 │   ├── app.py        # Adw.Application subclass
-│   └── window.py     # Main application window
+│   ├── window.py     # Main application window
+│   └── services/
+│       └── fake_tuner.py  # Simulated readings (until real pitch detection)
 ├── ui/
 │   └── tuner_view.py # Tuner display widget (note, frequency, meter)
 ├── data/             # Desktop entry, icons, metainfo
