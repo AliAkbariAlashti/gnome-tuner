@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=GNOME Tuner
+Exec=python3 run.py
+Icon=applications-music
+Type=Application
+Categories=AudioVideo;Music;
