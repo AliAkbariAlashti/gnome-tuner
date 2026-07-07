@@ -28,6 +28,14 @@ which makes it a perfect place for first-time contributors.
 - Follow the existing code style (PEP 8, clear names, minimal cleverness).
 - UI work should follow the [GNOME Human Interface Guidelines](https://developer.gnome.org/hig/).
 
+## Running the tests
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+Please make sure the suite passes before opening a pull request.
+
 ## Commit messages
 
 Use short, descriptive commit messages in the imperative mood, optionally

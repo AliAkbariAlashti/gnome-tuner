@@ -7,6 +7,17 @@ from gi.repository import Gtk, GLib
 from src.services.fake_tuner import FakeTuner
 
 
+def create_tuner():
+    """Prefer the real microphone tuner, fall back to the simulated one."""
+    try:
+        from src.services.mic_tuner import MicTuner
+
+        return MicTuner()
+    except Exception as error:
+        print(f"Microphone unavailable ({error}); using simulated tuner")
+        return FakeTuner()
+
+
 class TunerView(Gtk.Box):
     def __init__(self):
         super().__init__(
@@ -16,7 +27,7 @@ class TunerView(Gtk.Box):
             halign=Gtk.Align.CENTER,
         )
 
-        self.tuner = FakeTuner()
+        self.tuner = create_tuner()
 
         title = Gtk.Label(label="GNOME Tuner")
         title.add_css_class("title-1")
@@ -46,6 +57,13 @@ class TunerView(Gtk.Box):
 
     def update_tuner(self):
         data = self.tuner.get_reading()
+
+        if data is None:
+            self.note_label.set_label("--")
+            self.frequency_label.set_label("--- Hz")
+            self.meter.set_value(0)
+            self.status_label.set_label("Listening...")
+            return True
 
         self.note_label.set_label(data["note"])
 

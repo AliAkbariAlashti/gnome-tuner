@@ -1,1 +1,3 @@
 pygobject
+sounddevice
+numpy
